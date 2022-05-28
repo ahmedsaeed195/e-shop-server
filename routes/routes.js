@@ -1,5 +1,7 @@
 const express = require('express')
 
+const ProductsRouter = require('./productsRouter')
+
 const Router = express.Router()
 
 Router.get('', (req, res) => {
@@ -7,5 +9,7 @@ Router.get('', (req, res) => {
         message: 'Connection established'
     })
 })
+
+Router.use('/products', ProductsRouter)
 
 module.exports = Router

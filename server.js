@@ -1,12 +1,13 @@
 const express = require('express')
 const Router = require('./routes/routes')
-const mongoose = require('./config/database')
+const morgan = require('morgan')
 require('dotenv').config()
 
 const app = express()
 
+app.use(morgan('dev'))
+app.use(express.json())
 app.use('/', Router)
-
 
 const PORT = process.env.PORT || 8000
 
