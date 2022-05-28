@@ -5,9 +5,7 @@ const ProductsRouter = require('./productsRouter')
 const Router = express.Router()
 
 Router.get('', (req, res) => {
-    res.json({
-        message: 'Connection established'
-    })
+    res.send('Connection established')
 })
 
 Router.use('/products', ProductsRouter)
