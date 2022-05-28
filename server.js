@@ -5,7 +5,9 @@ require('dotenv').config()
 
 const app = express()
 
-app.use(morgan('dev'))
+if (app.get('env') === 'development') {
+    app.use(morgan('dev'))
+}
 app.use(express.json())
 app.use('/', Router)
 
