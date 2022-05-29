@@ -5,6 +5,10 @@ class ProductsController {
         const products = await Product.find()
         return res.status(200).json(products)
     }
+    async indexActive(req, res) {
+        const products = await Product.find({ status: 'true' })
+        return res.status(200).json(products)
+    }
 
     async show(req, res) {
         const product = await Product.findOne({ _id: req.params.id })
@@ -87,15 +91,20 @@ class ProductsController {
 
     async delete(req, res) {
         try {
-            const id = req.params.id
-            const query = await Product.deleteOne({ _id: id })
+            const product = await Product.findOne({ _id: req.params.id })
+            if (!product) {
+                return res.status(404).json({
+                    message: 'Product Not Found'
+                })
+            }
+            const query = await product.deleteOne()
             if (query.acknowledged) {
                 return res.status(200).json({
                     message: "Product Deleted Successfully"
                 })
             }
             return res.status(400).json({
-                message: 'something went wrong'
+                message: 'Invalid Request'
             })
         } catch (err) {
             return res.status(400).json({
