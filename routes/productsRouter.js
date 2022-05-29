@@ -26,11 +26,20 @@ const ProductsRouter = express.Router()
  *                  type: number
  *                  description: Product price
  *              stock:
- *                  type: number
+ *                  type: integer
  *                  description: Quantity of this product that is avaiable in stock
  *              status:
  *                  type: boolean
- *                  description: whether the product avaible for show or not
+ *                  description: Whether the product avaible for show or not
+ *              createdAt:
+ *                  type: string
+ *                  description: Date at which the document was created
+ *              updatedAt:
+ *                  type: string
+ *                  description: Date at which the document was last updated
+ *              __v:
+ *                  type: integer
+ *                  description: Version key of the document
  */
 //#endregion
 
