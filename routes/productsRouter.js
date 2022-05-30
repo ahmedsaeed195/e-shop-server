@@ -1,5 +1,6 @@
 const express = require('express')
 const ProductsController = require('../controllers/ProductsController')
+const ProductsValidator = require('../middleware/validation/products/ProductsValidator')
 
 const ProductsRouter = express.Router()
 
@@ -71,13 +72,48 @@ const ProductsRouter = express.Router()
  */
 //#endregion
 ProductsRouter.get('/', ProductsController.index)
-//#region Get ALL Active
+
+//#region Get by name
 /**
  * @swagger
- *  /products/active:
+ *  /products/{name}:
  *      get:
  *          tags: [Products]
- *          summary: Returns a list of all products that are active
+ *          summary: Returns a list of products with given name
+ *          parameters:
+ *            - in: path
+ *              name: name
+ *              schema:
+ *                 type: string
+ *              required: true
+ *              description: The product name
+ *          responses: 
+ *              200:
+ *                  description: The list of the products by name
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: array
+ *                              items:
+ *                                  $ref: '#/components/schemas/Product'
+ */
+//#endregion
+ProductsRouter.get('/:name', ProductsController.showByName)
+
+//#region Get by category
+/**
+ * @swagger
+ *  /products/{category}:
+ *      get:
+ *          tags: [Products]
+ *          summary: Returns a list of products with given category (Under Construction, DO NOT USE THIS YET)
+ *          parameters:
+ *            - in: path
+ *              name: category
+ *              schema:
+ *                 type: string
+ *              required: true
+ *              description: The category id
  *          responses: 
  *              200:
  *                  description: The list of the products
@@ -89,7 +125,7 @@ ProductsRouter.get('/', ProductsController.index)
  *                                  $ref: '#/components/schemas/Product'
  */
 //#endregion
-ProductsRouter.get('/active', ProductsController.indexActive)
+ProductsRouter.get('/:category', ProductsController.showByCategory)
 
 //#region Get by ID
 /**
@@ -143,7 +179,7 @@ ProductsRouter.get('/:id', ProductsController.show)
  *              
  */
 //#endregion
-ProductsRouter.post('/', ProductsController.store)
+ProductsRouter.post('/', ProductsValidator, ProductsController.store)
 
 //#region Update Product by ID
 /**
@@ -179,35 +215,6 @@ ProductsRouter.post('/', ProductsController.store)
  */
 //#endregion
 ProductsRouter.put('/:id', ProductsController.update)
-
-//#region Update Product Status by ID
-/**
- * @swagger
- *  /products/{id}/status:
- *      put:
- *          tags: [Products]
- *          summary: Update a product status by id
- *          parameters:
- *            - in: path
- *              name: id
- *              schema:
- *                  type: string
- *              required: true
- *              description: the product id
- *          requestBody:
- *              required: true
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/Product'
- *          responses:
- *              200:
- *                  description: Product status was successfully updated
- *              404:
- *                  description: Product was not found
- */
-//#endregion
-ProductsRouter.put('/:id/status', ProductsController.updateStatus)
 
 //#region Delete By ID
 /**

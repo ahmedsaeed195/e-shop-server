@@ -5,8 +5,14 @@ class ProductsController {
         const products = await Product.find()
         return res.status(200).json(products)
     }
-    async indexActive(req, res) {
-        const products = await Product.find({ status: 'true' })
+
+    async showByName(req, res) {
+        const products = await Product.find({ name: { $regex: '.*' + req.params.name + '.*' } })
+        return res.status(200).json(products)
+    }
+
+    async showByCategory(req, res) {
+        const products = await Product.find({ category: req.params.category })
         return res.status(200).json(products)
     }
 
@@ -61,32 +67,6 @@ class ProductsController {
             })
         }
 
-    }
-
-    async updateStatus(req, res) {
-        const product = await Product.findOne({ _id: req.params.id })
-        if (!product) {
-            return res.status(404).json({
-                message: 'Product Not Found'
-            })
-        }
-        try {
-            const data = req.body
-            const query = await product.updateOne(data)
-            if (query.acknowledged) {
-                return res.status(200).json({
-                    message: "Product Status Updated Successfully"
-                })
-            }
-            return res.status(400).json({
-                message: 'something went wrong'
-            })
-        } catch (err) {
-            return res.status(400).json({
-                message: `Invalid Request`,
-                error: err
-            })
-        }
     }
 
     async delete(req, res) {
