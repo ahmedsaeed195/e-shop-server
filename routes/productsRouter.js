@@ -15,7 +15,8 @@ const ProductsRouter = express.Router()
  *              - name
  *              - price
  *              - stock
- *              - status
+ *              - quantity
+ *              - categoryId
  *          properties:
  *              _id:
  *                  type: string
@@ -26,12 +27,18 @@ const ProductsRouter = express.Router()
  *              price:
  *                  type: number
  *                  description: Product price
- *              stock:
+ *              quantity:
  *                  type: integer
  *                  description: Quantity of this product that is avaiable in stock
- *              status:
- *                  type: boolean
- *                  description: Whether the product avaible for show or not
+ *              categoryId:
+ *                  type: string
+ *                  description: ID of the category classification
+ *              description:
+ *                  type: string
+ *                  description: Product description (Optional, default is an empty string)
+ *              rating:
+ *                  type: integer
+ *                  description: Rating of the product (Optional, default is 0)
  *              createdAt:
  *                  type: string
  *                  description: Date at which the document was created
