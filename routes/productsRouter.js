@@ -83,7 +83,7 @@ ProductsRouter.get('/', ProductsController.index)
 //#region Get by name
 /**
  * @swagger
- *  /products/{name}:
+ *  /products/name/{name}:
  *      get:
  *          tags: [Products]
  *          summary: Returns a list of products with given name
@@ -110,7 +110,7 @@ ProductsRouter.get('/name/:name', ProductsController.showByName)
 //#region Get by category
 /**
  * @swagger
- *  /products/{category}:
+ *  /products/category/{categoryid}:
  *      get:
  *          tags: [Products]
  *          summary: Returns a list of products with given category (Under Construction, DO NOT USE THIS YET)
