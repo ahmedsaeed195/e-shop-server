@@ -105,7 +105,7 @@ ProductsRouter.get('/', ProductsController.index)
  *                                  $ref: '#/components/schemas/Product'
  */
 //#endregion
-ProductsRouter.get('/:name', ProductsController.showByName)
+ProductsRouter.get('/name/:name', ProductsController.showByName)
 
 //#region Get by category
 /**
@@ -116,7 +116,7 @@ ProductsRouter.get('/:name', ProductsController.showByName)
  *          summary: Returns a list of products with given category (Under Construction, DO NOT USE THIS YET)
  *          parameters:
  *            - in: path
- *              name: category
+ *              name: categoryid
  *              schema:
  *                 type: string
  *              required: true
@@ -132,7 +132,7 @@ ProductsRouter.get('/:name', ProductsController.showByName)
  *                                  $ref: '#/components/schemas/Product'
  */
 //#endregion
-ProductsRouter.get('/:category', ProductsController.showByCategory)
+ProductsRouter.get('/category/:categoryid', ProductsController.showByCategory)
 
 //#region Get by ID
 /**
@@ -221,7 +221,7 @@ ProductsRouter.post('/', ProductsValidator, ProductsController.store)
  *                  description: Invalid request
  */
 //#endregion
-ProductsRouter.put('/:id', ProductsController.update)
+ProductsRouter.put('/:id', ProductsValidator, ProductsController.update)
 
 //#region Delete By ID
 /**
