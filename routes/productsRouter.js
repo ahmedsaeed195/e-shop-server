@@ -1,6 +1,7 @@
 const express = require('express')
 const ProductsController = require('../controllers/ProductsController')
 const ProductsValidator = require('../middleware/validation/products/ProductsValidator')
+const IdValidator = require('../middleware/validation/products/IdValidator')
 
 const ProductsRouter = express.Router()
 
@@ -110,7 +111,7 @@ ProductsRouter.get('/name/:name', ProductsController.showByName)
 //#region Get by category
 /**
  * @swagger
- *  /products/category/{categoryid}:
+ *  /products/category/{id}:
  *      get:
  *          tags: [Products]
  *          summary: Returns a list of products with given category (Under Construction, DO NOT USE THIS YET)
@@ -132,7 +133,7 @@ ProductsRouter.get('/name/:name', ProductsController.showByName)
  *                                  $ref: '#/components/schemas/Product'
  */
 //#endregion
-ProductsRouter.get('/category/:categoryid', ProductsController.showByCategory)
+ProductsRouter.get('/category/:id', IdValidator, ProductsController.showByCategory)
 
 //#region Get by ID
 /**
@@ -159,7 +160,7 @@ ProductsRouter.get('/category/:categoryid', ProductsController.showByCategory)
  *                  description: The product was not found
  */
 //#endregion
-ProductsRouter.get('/:id', ProductsController.show)
+ProductsRouter.get('/:id', IdValidator, ProductsController.show)
 
 //#region Create Product
 /**
@@ -221,7 +222,7 @@ ProductsRouter.post('/', ProductsValidator, ProductsController.store)
  *                  description: Invalid request
  */
 //#endregion
-ProductsRouter.put('/:id', ProductsValidator, ProductsController.update)
+ProductsRouter.put('/:id', IdValidator, ProductsValidator, ProductsController.update)
 
 //#region Delete By ID
 /**
@@ -244,6 +245,6 @@ ProductsRouter.put('/:id', ProductsValidator, ProductsController.update)
  *                  description: The product was not found
  */
 //#endregion
-ProductsRouter.delete('/:id', ProductsController.delete)
+ProductsRouter.delete('/:id', IdValidator, ProductsController.delete)
 
 module.exports = ProductsRouter
