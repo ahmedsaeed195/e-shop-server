@@ -1,6 +1,5 @@
 const mongoose = require('../config/database')
 const Schema = mongoose.Schema
-const ObjectId = Schema.ObjectId
 
 const ProductSchema = new Schema({
     name: String,
@@ -9,7 +8,7 @@ const ProductSchema = new Schema({
         type: Number,
         integer: true
     },
-    categoryId: ObjectId,
+    category: String,
     description: String,
     rating: {
         type: Number,
