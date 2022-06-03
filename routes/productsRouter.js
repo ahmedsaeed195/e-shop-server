@@ -2,6 +2,7 @@ const express = require('express')
 const ProductsController = require('../controllers/ProductsController')
 const ProductsValidator = require('../middleware/validation/products/ProductsValidator')
 const IdValidator = require('../middleware/validation/products/IdValidator')
+const searchValidator = require('../middleware/validation/products/searchValidator')
 
 const ProductsRouter = express.Router()
 
@@ -61,6 +62,7 @@ const ProductsRouter = express.Router()
  */
 //#endregion
 
+//TODO: update swagger docs for GET ALL with the rest of queries
 //#region Get ALL
 /**
  * @swagger
@@ -68,62 +70,19 @@ const ProductsRouter = express.Router()
  *      get:
  *          tags: [Products]
  *          summary: Returns a list of all products
- *          responses: 
- *              200:
- *                  description: The list of the products
- *                  content:
- *                      application/json:
- *                          schema:
- *                              type: array
- *                              items:
- *                                  $ref: '#/components/schemas/Product'
- */
-//#endregion
-ProductsRouter.get('/', ProductsController.index)
-
-//#region Get by name
-/**
- * @swagger
- *  /products/name/{name}:
- *      get:
- *          tags: [Products]
- *          summary: Returns a list of products with given name
  *          parameters:
- *            - in: path
+ *            - in: query
  *              name: name
  *              schema:
- *                 type: string
- *              required: true
+ *                  type: string
+ *              description: The product name
+ *            - in: query
+ *              name: price
+ *              schema:
+ *                  type: number
  *              description: The product name
  *          responses: 
  *              200:
- *                  description: The list of the products by name
- *                  content:
- *                      application/json:
- *                          schema:
- *                              type: array
- *                              items:
- *                                  $ref: '#/components/schemas/Product'
- */
-//#endregion
-ProductsRouter.get('/name/:name', ProductsController.showByName)
-
-//#region Get by category
-/**
- * @swagger
- *  /products/category/{id}:
- *      get:
- *          tags: [Products]
- *          summary: Returns a list of products with given category (Under Construction, DO NOT USE THIS YET)
- *          parameters:
- *            - in: path
- *              name: categoryid
- *              schema:
- *                 type: string
- *              required: true
- *              description: The category id
- *          responses: 
- *              200:
  *                  description: The list of the products
  *                  content:
  *                      application/json:
@@ -133,7 +92,7 @@ ProductsRouter.get('/name/:name', ProductsController.showByName)
  *                                  $ref: '#/components/schemas/Product'
  */
 //#endregion
-ProductsRouter.get('/category/:id', IdValidator, ProductsController.showByCategory)
+ProductsRouter.get('/', searchValidator, ProductsController.index)
 
 //#region Get by ID
 /**
@@ -161,7 +120,7 @@ ProductsRouter.get('/category/:id', IdValidator, ProductsController.showByCatego
  */
 //#endregion
 ProductsRouter.get('/:id', IdValidator, ProductsController.show)
-
+//TODO: update swagger docs with 406 error code for not acceptable data and 201 for successful post
 //#region Create Product
 /**
  * @swagger

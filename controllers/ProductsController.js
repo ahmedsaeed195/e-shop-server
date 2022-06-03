@@ -2,17 +2,8 @@ const Product = require('../models/Product')
 
 class ProductsController {
     async index(req, res) {
-        const products = await Product.find()
-        return res.status(200).json(products)
-    }
-
-    async showByName(req, res) {
-        const products = await Product.find({ name: { $regex: '.*' + req.params.name + '.*' } })
-        return res.status(200).json(products)
-    }
-
-    async showByCategory(req, res) {
-        const products = await Product.find({ category: req.params.category })
+        const searchQuery = req.query
+        const products = await Product.find(searchQuery)
         return res.status(200).json(products)
     }
 
