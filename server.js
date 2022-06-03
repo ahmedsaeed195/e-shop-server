@@ -1,6 +1,7 @@
 const express = require('express')
 const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUI = require('swagger-ui-express')
+const cors = require('cors')
 
 const Router = require('./routes/routes')
 require('dotenv').config()
@@ -28,7 +29,7 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions)
 console.log(swaggerDocs)
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 
-
+app.use(cors())
 app.use(express.json())
 app.use('/', Router)
 
