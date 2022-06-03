@@ -7,7 +7,7 @@ const schema = Joi.object({
 
 const validate = async (req, res, next) => {
     try {
-        await schema.validateAsync(req.params.id)
+        await schema.validateAsync(req.params)
         next();
     } catch (err) {
         return res.status(406).json({
