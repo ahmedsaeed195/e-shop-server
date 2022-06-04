@@ -2,12 +2,12 @@ const Joi = require('joi')
 Joi.objectId = require('joi-objectid')(Joi)
 
 const schema = Joi.object({
-    name: Joi.string().alphanum().required(),
+    name: Joi.string().required(),
     price: Joi.number().required(),
     quantity: Joi.number().integer().required(),
-    category: Joi.string().alphanum().required(),
-    description: Joi.string().alphanum().default(''),
-    rating: Joi.number().integer().default(0)
+    category: Joi.string().required(),
+    description: Joi.string().default(''),
+    rating: Joi.number().integer().min(0).max(5).default(0)
 }).options({ stripUnknown: true })
 
 const validate = async (req, res, next) => {
