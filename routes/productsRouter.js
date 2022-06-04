@@ -18,7 +18,7 @@ const ProductsRouter = express.Router()
  *              - price
  *              - stock
  *              - quantity
- *              - categoryId
+ *              - category
  *          properties:
  *              _id:
  *                  type: string
@@ -32,15 +32,15 @@ const ProductsRouter = express.Router()
  *              quantity:
  *                  type: integer
  *                  description: Quantity of this product that is avaiable in stock
- *              categoryId:
+ *              category:
  *                  type: string
- *                  description: ID of the category classification
+ *                  description: Name of the category classification
  *              description:
  *                  type: string
  *                  description: Product description (Optional, default is an empty string)
  *              rating:
  *                  type: integer
- *                  description: Rating of the product (Optional, default is 0)
+ *                  description: Rating of the product, min&#58; 0, max&#58; 5 (Optional, default is 0)
  *              createdAt:
  *                  type: string
  *                  description: Date at which the document was created
@@ -62,7 +62,6 @@ const ProductsRouter = express.Router()
  */
 //#endregion
 
-//TODO: update swagger docs for GET ALL with the rest of queries
 //#region Get ALL
 /**
  * @swagger
@@ -80,7 +79,27 @@ const ProductsRouter = express.Router()
  *              name: price
  *              schema:
  *                  type: number
- *              description: The product name
+ *              description: The product price
+ *            - in: query
+ *              name: quantity
+ *              schema:
+ *                  type: integer
+ *              description: The product quantity available in stock
+ *            - in: query
+ *              name: category
+ *              schema:
+ *                  type: string
+ *              description: The product category classification
+ *            - in: query
+ *              name: description
+ *              schema:
+ *                  type: string
+ *              description: The product description
+ *            - in: query
+ *              name: rating
+ *              schema:
+ *                  type: string
+ *              description: The product rating
  *          responses: 
  *              200:
  *                  description: The list of the products
@@ -120,7 +139,6 @@ ProductsRouter.get('/', searchValidator, ProductsController.index)
  */
 //#endregion
 ProductsRouter.get('/:id', IdValidator, ProductsController.show)
-//TODO: update swagger docs with 406 error code for not acceptable data and 201 for successful post
 //#region Create Product
 /**
  * @swagger
@@ -133,9 +151,34 @@ ProductsRouter.get('/:id', IdValidator, ProductsController.show)
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Product'
+ *                          type: object
+ *                          required:
+ *                              - name
+ *                              - price
+ *                              - quantity
+ *                              - category
+ *                          properties:
+ *                              name:
+ *                                  type: string
+ *                              price:
+ *                                  type: number
+ *                              quantity:
+ *                                  type: integer
+ *                              category:
+ *                                  type: string
+ *                              description:
+ *                                  type: string
+ *                              rating:
+ *                                  type: integer
+ *                      example:
+ *                              name: test
+ *                              price: 25.54
+ *                              quantity: 20
+ *                              category: tests
+ *                              description: Test product
+ *                              rating: 5
  *          responses:
- *              200:
+ *              201:
  *                  description: The product was successfully created
  *                  content:
  *                      application/json:
@@ -143,6 +186,8 @@ ProductsRouter.get('/:id', IdValidator, ProductsController.show)
  *                              $ref: '#/components/schemas/Product'
  *              400:
  *                  description: Invalid request
+ *              406:
+ *                  description: Not Acceptable, data validation error
  *              
  */
 //#endregion
@@ -167,7 +212,27 @@ ProductsRouter.post('/', ProductsValidator, ProductsController.store)
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/Product'
+ *                          type: object
+ *                          properties:
+ *                              name:
+ *                                  type: string
+ *                              price:
+ *                                  type: number
+ *                              quantity:
+ *                                  type: integer
+ *                              category:
+ *                                  type: string
+ *                              description:
+ *                                  type: string
+ *                              rating:
+ *                                  type: integer
+ *                      example:
+ *                              name: test
+ *                              price: 25.54
+ *                              quantity: 20
+ *                              category: tests
+ *                              description: Test product
+ *                              rating: 5
  *          responses:
  *              200:
  *                  description: The product was successfully updated
@@ -175,10 +240,12 @@ ProductsRouter.post('/', ProductsValidator, ProductsController.store)
  *                      application/json:
  *                          schema:
  *                              $ref: '#/components/schemas/Product'
- *              404:
- *                  description: The product was not found
  *              400:
  *                  description: Invalid request
+ *              404:
+ *                  description: The product was not found
+ *              406:
+ *                  description: Not Acceptable, data validation error
  */
 //#endregion
 ProductsRouter.put('/:id', IdValidator, ProductsValidator, ProductsController.update)
