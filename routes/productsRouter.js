@@ -37,7 +37,7 @@ const ProductsRouter = express.Router()
  *                  description: Name of the category classification
  *              description:
  *                  type: string
- *                  description: Product description (Optional, default is an empty string)
+ *                  description: Product description (Optional, default is "No Description")
  *              rating:
  *                  type: integer
  *                  description: Rating of the product, min&#58; 0, max&#58; 5 (Optional, default is 0)

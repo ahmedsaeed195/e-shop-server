@@ -6,7 +6,7 @@ const schema = Joi.object({
     price: Joi.number().required(),
     quantity: Joi.number().integer().required(),
     category: Joi.string().required(),
-    description: Joi.string().default(''),
+    description: Joi.string().empty('').default('No Description'),
     rating: Joi.number().integer().min(0).max(5).default(0)
 }).options({ stripUnknown: true })
 
