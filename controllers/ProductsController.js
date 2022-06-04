@@ -3,7 +3,7 @@ const Product = require('../models/Product')
 class ProductsController {
     async index(req, res) {
         const searchQuery = req.query
-        const products = await Product.find(searchQuery)
+        const products = await Product.find(searchQuery).sort('-createdAt')
         return res.status(200).json(products)
     }
 
