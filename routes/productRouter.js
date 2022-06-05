@@ -1,8 +1,8 @@
 const express = require('express')
-const ProductsController = require('../controllers/ProductsController')
-const ProductsValidator = require('../middleware/validation/products/ProductsValidator')
-const IdValidator = require('../middleware/validation/products/IdValidator')
-const searchValidator = require('../middleware/validation/products/searchValidator')
+const ProductController = require('../controllers/ProductController')
+const ProductValidator = require('../middleware/validation/product/ProductValidator')
+const IdValidator = require('../middleware/validation/product/IdValidator')
+const searchValidator = require('../middleware/validation/product/searchValidator')
 
 const ProductsRouter = express.Router()
 
@@ -57,17 +57,17 @@ const ProductsRouter = express.Router()
 /**
  * @swagger
  *  tags:
- *      name: Products
- *      description: Products managing API
+ *      name: Product
+ *      description: Product managing API
  */
 //#endregion
 
 //#region Get ALL
 /**
  * @swagger
- *  /products:
+ *  /product:
  *      get:
- *          tags: [Products]
+ *          tags: [Product]
  *          summary: Returns a list of all products
  *          parameters:
  *            - in: query
@@ -111,14 +111,14 @@ const ProductsRouter = express.Router()
  *                                  $ref: '#/components/schemas/Product'
  */
 //#endregion
-ProductsRouter.get('/', searchValidator, ProductsController.index)
+ProductsRouter.get('/', searchValidator, ProductController.index)
 
 //#region Get by ID
 /**
  * @swagger
- *  /products/{id}:
+ *  /product/{id}:
  *      get:
- *          tags: [Products]
+ *          tags: [Product]
  *          summary: Returns a product by id
  *          parameters:
  *            - in: path
@@ -138,13 +138,13 @@ ProductsRouter.get('/', searchValidator, ProductsController.index)
  *                  description: The product was not found
  */
 //#endregion
-ProductsRouter.get('/:id', IdValidator, ProductsController.show)
+ProductsRouter.get('/:id', IdValidator, ProductController.show)
 //#region Create Product
 /**
  * @swagger
- *  /products:
+ *  /product:
  *      post:
- *          tags: [Products]
+ *          tags: [Product]
  *          summary: Create a new product
  *          requestBody:
  *              required: true
@@ -184,21 +184,19 @@ ProductsRouter.get('/:id', IdValidator, ProductsController.show)
  *                      application/json:
  *                          schema:
  *                              $ref: '#/components/schemas/Product'
- *              400:
- *                  description: Invalid request
  *              406:
  *                  description: Not Acceptable, data validation error
  *              
  */
 //#endregion
-ProductsRouter.post('/', ProductsValidator, ProductsController.store)
+ProductsRouter.post('/', ProductValidator, ProductController.store)
 
 //#region Update Product by ID
 /**
  * @swagger
- *  /products/{id}:
+ *  /product/{id}:
  *      put:
- *          tags: [Products]
+ *          tags: [Product]
  *          summary: Update a product by id
  *          parameters:
  *            - in: path
@@ -240,22 +238,20 @@ ProductsRouter.post('/', ProductsValidator, ProductsController.store)
  *                      application/json:
  *                          schema:
  *                              $ref: '#/components/schemas/Product'
- *              400:
- *                  description: Invalid request
  *              404:
  *                  description: The product was not found
  *              406:
  *                  description: Not Acceptable, data validation error
  */
 //#endregion
-ProductsRouter.put('/:id', IdValidator, ProductsValidator, ProductsController.update)
+ProductsRouter.put('/:id', IdValidator, ProductValidator, ProductController.update)
 
 //#region Delete By ID
 /**
  * @swagger
- *  /products/{id}:
+ *  /product/{id}:
  *      delete:
- *          tags: [Products]
+ *          tags: [Product]
  *          summary: Remove product by id
  *          parameters:
  *            - in: path
@@ -271,6 +267,6 @@ ProductsRouter.put('/:id', IdValidator, ProductsValidator, ProductsController.up
  *                  description: The product was not found
  */
 //#endregion
-ProductsRouter.delete('/:id', IdValidator, ProductsController.delete)
+ProductsRouter.delete('/:id', IdValidator, ProductController.delete)
 
 module.exports = ProductsRouter

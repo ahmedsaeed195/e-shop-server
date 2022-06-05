@@ -26,8 +26,8 @@ class ProductsController {
                 product
             })
         } catch (err) {
-            return res.status(400).json({
-                message: `Invalid Request`,
+            return res.status(500).json({
+                message: `Internal Server Error`,
                 error: err
             })
         }
@@ -42,18 +42,13 @@ class ProductsController {
         }
         try {
             const data = req.body
-            const query = await product.updateOne(data)
-            if (query.acknowledged) {
-                return res.status(200).json({
-                    message: "Product Updated Successfully"
-                })
-            }
-            return res.status(400).json({
-                message: 'something went wrong'
+            await product.updateOne(data)
+            return res.status(200).json({
+                message: "Product Updated Successfully"
             })
         } catch (err) {
-            return res.status(400).json({
-                message: `Invalid Request`,
+            return res.status(500).json({
+                message: `Internal Server Error`,
                 error: err
             })
         }
@@ -68,18 +63,14 @@ class ProductsController {
                     message: 'Product Not Found'
                 })
             }
-            const query = await product.deleteOne()
-            if (query.acknowledged) {
-                return res.status(200).json({
-                    message: "Product Deleted Successfully"
-                })
-            }
-            return res.status(400).json({
-                message: 'Invalid Request'
+            await product.deleteOne()
+            return res.status(200).json({
+                message: "Product Deleted Successfully"
             })
+
         } catch (err) {
-            return res.status(400).json({
-                message: `Invalid Request`,
+            return res.status(500).json({
+                message: `Internal Server Error`,
                 error: err
             })
         }
