@@ -1,10 +1,10 @@
 const express = require('express')
 const ProductController = require('../controllers/ProductController')
 const ProductValidator = require('../middleware/validation/product/ProductValidator')
-const IdValidator = require('../middleware/validation/product/IdValidator')
+const IdValidator = require('../middleware/validation/IdValidator')
 const searchValidator = require('../middleware/validation/product/searchValidator')
 
-const ProductsRouter = express.Router()
+const ProductRouter = express.Router()
 
 //#region Swagger schema
 /**
@@ -111,7 +111,7 @@ const ProductsRouter = express.Router()
  *                                  $ref: '#/components/schemas/Product'
  */
 //#endregion
-ProductsRouter.get('/', searchValidator, ProductController.index)
+ProductRouter.get('/', searchValidator, ProductController.index)
 
 //#region Get by ID
 /**
@@ -138,7 +138,7 @@ ProductsRouter.get('/', searchValidator, ProductController.index)
  *                  description: The product was not found
  */
 //#endregion
-ProductsRouter.get('/:id', IdValidator, ProductController.show)
+ProductRouter.get('/:id', IdValidator, ProductController.show)
 //#region Create Product
 /**
  * @swagger
@@ -189,7 +189,7 @@ ProductsRouter.get('/:id', IdValidator, ProductController.show)
  *              
  */
 //#endregion
-ProductsRouter.post('/', ProductValidator, ProductController.store)
+ProductRouter.post('/', ProductValidator, ProductController.store)
 
 //#region Update Product by ID
 /**
@@ -244,7 +244,7 @@ ProductsRouter.post('/', ProductValidator, ProductController.store)
  *                  description: Not Acceptable, data validation error
  */
 //#endregion
-ProductsRouter.put('/:id', IdValidator, ProductValidator, ProductController.update)
+ProductRouter.put('/:id', IdValidator, ProductValidator, ProductController.update)
 
 //#region Delete By ID
 /**
@@ -267,6 +267,6 @@ ProductsRouter.put('/:id', IdValidator, ProductValidator, ProductController.upda
  *                  description: The product was not found
  */
 //#endregion
-ProductsRouter.delete('/:id', IdValidator, ProductController.delete)
+ProductRouter.delete('/:id', IdValidator, ProductController.delete)
 
-module.exports = ProductsRouter
+module.exports = ProductRouter
