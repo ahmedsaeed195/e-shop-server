@@ -15,15 +15,15 @@ class CategoryController {
     async store(req, res) {
         try {
             const data = req.body
-            const category = await Category.find({ name: data.name })
-            if (category.length) {
+            const category = await Category.findOne({ name: data.name })
+            if (category) {
                 return res.status(400).json({
-                    message: 'name already exists'
+                    message: 'Category already exists'
                 })
             }
             const newCategory = await Category.create(data)
             return res.status(201).json({
-                message: 'Category Added',
+                message: 'Category Added Successfully',
                 category: newCategory
             })
         } catch (err) {
@@ -43,13 +43,12 @@ class CategoryController {
                 })
             }
             const data = req.body
-            const products = await Product.find({ category: category.name })
             const productData = {
                 ...(data.name && { category: data.name }),
                 status: data.status
             }
             await category.updateOne(data)
-            // await products.updateMany(productData)
+            await Product.updateMany({ category: data.name }, productData)
             return res.status(200).json({
                 message: "Category Updated Successfully"
             })
