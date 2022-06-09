@@ -8,7 +8,7 @@ require('dotenv').config()
 
 const app = express()
 
-if (app.get('env') === 'development') {
+if (app.get('env') === 'Development') {
     const morgan = require('morgan')
     app.use(morgan('dev'))
 }
