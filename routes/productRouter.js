@@ -113,6 +113,57 @@ const ProductRouter = express.Router()
 //#endregion
 ProductRouter.get('/', searchValidator, ProductController.index)
 
+//#region Get Active
+/**
+ * @swagger
+ *  /product/active:
+ *      get:
+ *          tags: [Product]
+ *          summary: Returns a list of all active products
+ *          parameters:
+ *            - in: query
+ *              name: name
+ *              schema:
+ *                  type: string
+ *              description: The product name
+ *            - in: query
+ *              name: price
+ *              schema:
+ *                  type: number
+ *              description: The product price
+ *            - in: query
+ *              name: quantity
+ *              schema:
+ *                  type: integer
+ *              description: The product quantity available in stock
+ *            - in: query
+ *              name: category
+ *              schema:
+ *                  type: string
+ *              description: The product category classification
+ *            - in: query
+ *              name: description
+ *              schema:
+ *                  type: string
+ *              description: The product description
+ *            - in: query
+ *              name: rating
+ *              schema:
+ *                  type: string
+ *              description: The product rating
+ *          responses: 
+ *              200:
+ *                  description: The list of the products
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: array
+ *                              items:
+ *                                  $ref: '#/components/schemas/Product'
+ */
+//#endregion
+ProductRouter.get('/active', searchValidator, ProductController.indexActive)
+
 //#region Get by ID
 /**
  * @swagger
@@ -139,6 +190,7 @@ ProductRouter.get('/', searchValidator, ProductController.index)
  */
 //#endregion
 ProductRouter.get('/:id', IdValidator, ProductController.show)
+
 //#region Create Product
 /**
  * @swagger

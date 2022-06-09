@@ -1,10 +1,28 @@
 const Product = require('../models/Product')
+const Category = require('../models/Category')
 
 class ProductsController {
     async index(req, res) {
         try {
             const searchQuery = req.query
             const products = await Product.find(searchQuery).sort('-createdAt')
+            return res.status(200).json(products)
+        } catch (err) {
+            return res.status(500).json({
+                message: `Internal Server Error`,
+                error: err
+            })
+        }
+    }
+
+    async indexActive(req, res) {
+        try {
+            const search = {
+                status: true,
+                ...req.query
+            }
+            console.log(search)
+            const products = await Product.find(search).sort('-createdAt')
             return res.status(200).json(products)
         } catch (err) {
             return res.status(500).json({
@@ -21,7 +39,7 @@ class ProductsController {
                 return res.status(200).json(product)
             }
             return res.status(404).json({
-                message: 'Not Found'
+                message: 'Product Not Found'
             })
         } catch (err) {
             return res.status(500).json({
@@ -34,9 +52,18 @@ class ProductsController {
     async store(req, res) {
         try {
             const data = req.body
+            const category = await Category.findOne({ name: data.category })
+            if (!category) {
+                return res.status(400).json({
+                    message: "Category Doesn't Exist"
+                })
+            }
+            if (!category.status) {
+                data.status = false
+            }
             const product = await Product.create(data)
             return res.status(201).json({
-                message: 'Product Added',
+                message: 'Product Added Successfully',
                 product
             })
         } catch (err) {
@@ -55,17 +82,24 @@ class ProductsController {
                     message: 'Product Not Found'
                 })
             }
-            await product.updateOne(req.body)
+            const data = req.body
+            const category = await Category.findOne({ name: data.category })
+            if (!category) {
+                return res.status(404).json({
+                    message: 'Category Not Found'
+                })
+            }
+            data.status = category.status
+            await product.updateOne(data)
             return res.status(200).json({
-                message: "Product Updated Successfully"
+                message: 'Product Updated Successfully'
             })
         } catch (err) {
             return res.status(500).json({
-                message: `Internal Server Error`,
+                message: 'Internal Server Error',
                 error: err
             })
         }
-
     }
 
     async delete(req, res) {
