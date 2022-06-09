@@ -48,7 +48,7 @@ class CategoryController {
                 status: data.status
             }
             await category.updateOne(data)
-            await Product.updateMany({ category: data.name }, productData)
+            await Product.updateMany({ category: category.name }, productData)
             return res.status(200).json({
                 message: "Category Updated Successfully"
             })
