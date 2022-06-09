@@ -18,7 +18,7 @@ class CategoryController {
             const category = await Category.findOne({ name: data.name })
             if (category) {
                 return res.status(400).json({
-                    message: 'Category already exists'
+                    message: 'Category exists'
                 })
             }
             const newCategory = await Category.create(data)

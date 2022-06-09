@@ -41,6 +41,9 @@ const ProductRouter = express.Router()
  *              rating:
  *                  type: integer
  *                  description: Rating of the product, min&#58; 0, max&#58; 5 (Optional, default is 0)
+ *              status:
+ *                  type: boolean
+ *                  description: Status of product if it is active or not (Auto managed, please don't change this manually)
  *              createdAt:
  *                  type: string
  *                  description: Date at which the document was created
