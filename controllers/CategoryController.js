@@ -3,13 +3,27 @@ const Product = require('../models/Product')
 
 class CategoryController {
     async index(req, res) {
-        const categories = await Category.find().sort('-name')
-        return res.status(200).json(categories)
+        try {
+            const categories = await Category.find().sort('-name')
+            return res.status(200).json(categories)
+        } catch (err) {
+            return res.status(500).json({
+                message: `Internal Server Error`,
+                error: err
+            })
+        }
     }
 
     async indexActive(req, res) {
-        const categories = await Category.find({ status: true }).sort('-name')
-        return res.status(200).json(categories)
+        try {
+            const categories = await Category.find({ status: true }).sort('-name')
+            return res.status(200).json(categories)
+        } catch (err) {
+            return res.status(500).json({
+                message: `Internal Server Error`,
+                error: err
+            })
+        }
     }
 
     async store(req, res) {
