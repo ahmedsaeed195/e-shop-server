@@ -30,8 +30,14 @@ console.log(swaggerDocs)
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 
 app.use(cors())
+app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use('/', Router)
+
+app.on('uncaughtException', err => {
+    console.error('There was an uncaught error', err);
+    process.exit(1); // mandatory (as per the Node.js docs)
+});
 
 const PORT = process.env.PORT || 8000
 
