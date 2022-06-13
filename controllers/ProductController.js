@@ -1,3 +1,5 @@
+const path = require('path')
+const fs = require('fs')
 const Product = require('../models/Product')
 const Category = require('../models/Category')
 
@@ -110,6 +112,16 @@ class ProductsController {
                     message: 'Product Not Found'
                 })
             }
+            product.images.map(async image => {
+                try {
+                    if (image) {
+                        const file = path.normalize('./images/' + path.basename(image))
+                        await fs.promises.unlink(file)
+                    }
+                } catch (err) {
+                    console.error(err)
+                }
+            })
             await product.deleteOne()
             return res.status(200).json({
                 message: "Product Deleted Successfully"
