@@ -2,7 +2,7 @@ const express = require('express')
 const ProductController = require('../controllers/ProductController')
 const ProductValidator = require('../middleware/validation/product/ProductValidator')
 const IdValidator = require('../middleware/validation/IdValidator')
-const searchValidator = require('../middleware/validation/product/searchValidator')
+const searchValidator = require('../middleware/validation/product/SearchValidator')
 
 const ProductRouter = express.Router()
 
