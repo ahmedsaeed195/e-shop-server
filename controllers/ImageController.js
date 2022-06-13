@@ -42,7 +42,13 @@ class ImageController {
                     message: 'Product Not Found'
                 })
             }
-            const file = path.normalize('./images/' + path.basename(product.images[data.index] ? product.images[data.index] : 'null'))
+            if (!product.images[data.index]) {
+                return res.status(406).json({
+                    message: 'No Image Provided',
+                    error: `Value of image of index ${data.index} is null`
+                })
+            }
+            const file = path.normalize('./images/' + path.basename(product.images[data.index]))
             await fs.promises.unlink(file)
             product.images[data.index] = null
             await product.save()
