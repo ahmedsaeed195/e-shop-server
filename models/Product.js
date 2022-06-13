@@ -17,7 +17,8 @@ const ProductSchema = new Schema({
     status: {
         type: Boolean,
         default: true
-    }
+    },
+    images: [String]
 },
     { timestamps: true }
 )
