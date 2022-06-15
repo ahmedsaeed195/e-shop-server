@@ -16,7 +16,6 @@ const ProductRouter = express.Router()
  *          required:
  *              - name
  *              - price
- *              - stock
  *              - quantity
  *              - category
  *          properties:

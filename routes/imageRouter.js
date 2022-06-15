@@ -3,7 +3,6 @@ const multer = require('multer')
 const fs = require('fs')
 const ImageController = require('../controllers/ImageController')
 const ImageValidator = require('../middleware/validation/image/ImageValidator')
-const { nextTick } = require('process')
 
 const ImageRouter = express.Router()
 
@@ -28,10 +27,68 @@ const fileFilter = (req, file, cb) => {
 
 const uploads = multer({ storage, fileFilter }).single('image')
 
+//#region Swagger Tags
+/**
+ * @swagger
+ *  tags:
+ *      name: Image
+ *      description: Image managing API
+ */
+//#endregion
+
 //fetch images
+/**
+ * @swagger
+ *  /image/{name}:
+ *      get:
+ *          tags: [Image]
+ *          summary: Get an image by its name. (used as a normal URL and not an HTTP Get method)
+ *          parameters:
+ *            - in: path
+ *              name: name
+ *              schema:
+ *                  type: string
+ *              description: The image name
+ *              required: true
+ *          responses:
+ *              200:
+ *                  description: The image selected
+ *              404:
+ *                  description: The image was not found
+ */
 ImageRouter.use('/', express.static('images'))
 
-//upload images
+//#region Upload Image
+/**
+ * @swagger
+ *  /image:
+ *      post:
+ *          tags: [Image]
+ *          summary: Upload an image and link it to a product
+ *          requestBody:
+ *              content:
+ *                  multipart/form-data:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              image:
+ *                                  type: string
+ *                                  format: binary
+ *                                  description: The image file to upload
+ *                              id:
+ *                                  type: string
+ *                              index:
+ *                                  type: number
+ *          responses:
+ *              200:
+ *                  description: The image was successfully uploaded
+ *              404:
+ *                  description: The product was not found
+ *              406:
+ *                  description: Not Acceptable, data validation error
+ *          
+ */
+//#endregion
 ImageRouter.post('/', function (req, res, next) {
     uploads(req, res, function (err) {
         if (err) {
@@ -45,6 +102,34 @@ ImageRouter.post('/', function (req, res, next) {
     })
 }, ImageValidator, ImageController.upload)
 
+//#region Delete Image
+/**
+ * @swagger
+ *  /image:
+ *      delete:
+ *          tags: [Image]
+ *          summary: Remove selected image
+ *          consumes:
+ *              - multipart/form-data
+ *          requestBody:
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              id:
+ *                                  type: string
+ *                              index:
+ *                                  type: integer
+ *          responses:
+ *              200:
+ *                  description: The image was deleted
+ *              404:
+ *                  description: The product was not found || The image was not found
+ *              406:
+ *                  description: Not Acceptable, data validation error
+ */
+//#endregion
 ImageRouter.delete('/', ImageController.delete)
 
 module.exports = ImageRouter
