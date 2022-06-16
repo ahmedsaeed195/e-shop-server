@@ -14,7 +14,11 @@ class ImageController {
             }
             if (product.images[data.index]) {
                 const file = path.normalize('./images/' + path.basename(product.images[data.index] ? product.images[data.index] : 'null'))
-                await fs.promises.unlink(file)
+                try {
+                    await fs.promises.unlink(file)
+                } catch (err) {
+                    product.images[data.index] = null
+                }
             }
             product.images[data.index] = path.basename(req.file.path)
             await product.save()
@@ -50,17 +54,17 @@ class ImageController {
             }
             const file = path.normalize('./images/' + path.basename(product.images[data.index]))
             await fs.promises.unlink(file)
-            product.images[data.index] = null
+            product.images.splice([data.index], 1)
             await product.save()
             res.status(200).json({
                 message: 'Image Deleted Successfully',
                 product
             })
         } catch (err) {
-            if (err.code === 'ENOENT') {
+            if (err.syscall === 'unlink') {
                 //empty the image location in product because the used image doesn't exist
                 const product = await Product.findOne({ _id: req.body.id })
-                product.images[req.body.index] = null
+                product.images.splice([req.body.index], 1)
                 await product.save()
                 return res.status(404).json({
                     message: `Image Not Found`,
